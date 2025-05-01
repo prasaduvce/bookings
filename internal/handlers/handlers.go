@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/prasaduvce/bookings/pkg/config"
-	"github.com/prasaduvce/bookings/pkg/models"
-	"github.com/prasaduvce/bookings/pkg/render"
+	"github.com/prasaduvce/bookings/internal/config"
+	"github.com/prasaduvce/bookings/internal/models"
+	"github.com/prasaduvce/bookings/internal/render"
 )
 
 type Repository struct {
