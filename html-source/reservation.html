@@ -5,28 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Nice Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-
-    <style>
-        .my-footer {
-            height: 5em;
-            background-color: #163b65;
-            margin-top: 1.5em;
-            padding: 1em;
-            color: #ffffff;
-            font-size: 80%;
-        }
-
-        .room-image {
-          max-width: 50%;
-        }
-
-        p {
-
-        }
-    </style>
-</head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/css/datepicker-bs5.min.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
+    <link rel="stylesheet" type="text/css" href="static/css/styles.css">
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
@@ -67,20 +48,20 @@
             <div class="col">
                 <h1 class="nt-5">Search For Availability</h1>
 
-                <form action="reservation.html" method="GET" class="row row-cols-lg-auto g-3 align-items-center">
+                <form action="reservation.html" method="GET" class="row g-3 needs-validation" novalidate>
 
-                  <div class="col-12">
-                    <label for="start_date" class="form-label">Start date</label>
-                    <input required type="date" class="form-control" id="start_date" name="start_date" aria-describedby="startDateHelp">
-                    <div id="emailHelp" class="form-text">Enter your start date in the form of YYYY-MM-DD.</div>
+                  <div class="form-row">
+                    <div class="col">
+                      <div class="form-row" id="date-range">
+                        <div class="col">
+                          <input required type="text" class="form-control" id="start_date" name="start_date" aria-describedby="startDateHelp" placeholder="Arrival">
+                        </div>
+                        <div class="col">
+                          <input required type="text" class="form-control" id="end_date" name="end_date" aria-describedby="endDateHelp" placeholder="Departure">
+                        </div>
+                      </div>
+                    </div>
                   </div>
-
-                  <div class="col-12">
-                    <label for="end_date" class="form-label">End date</label>
-                    <input required type="date" class="form-control" id="end_date" name="end_date" aria-describedby="endDateHelp">
-                    <div id="emailHelp" class="form-text">Enter your end date in the form of YYYY-MM-DD.</div>
-                  </div>
-
                 <div class="col-12">
                   <button type="submit" class="btn btn-primary">Search Availability</button>
               </div>
@@ -89,9 +70,17 @@
             </div>
         </div>
 
-    </div>
+        <div class="row">
+          <div class="col">
+              <p id="myParagraph">This is some text.</p>
+              <p>
+                <button id="colorButton" class="btn btn-outline-secondary">Click Me</button>
+              </p>
+          </div>
+        </div>
+    
+      </div>
     <div class="row">
-
         <div class="row my-footer" >
             <div class="col">
                 Left
@@ -102,6 +91,200 @@
             <div class="col">
                 Right
             </div>
-        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/datepicker-full.min.js"></script>
+    <script src="https://unpkg.com/notie"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <script>
+
+      var attention = Prompt();
+
+      const elem = document.getElementById('date-range');
+      const dateRangepicker = new DateRangePicker(elem, {
+        autohide: true,
+        format: 'yyyy-mm-dd',
+        //minDate: new Date()
+      });
+    
+
+      console.log("I am printing from the javascript");
+      //let myEl = document.getElementById("myParagraph");
+      //alert("Hello");
+      //myEl.classList.add("redText");
+      document.getElementById("colorButton").addEventListener("click", function() {
+
+        //notify("Hello, this is a notification!", "warning");
+        //myEl.classList.toggle("redText");
+        //notifyModal("Title", "<em>All Success</em>", "success", "Great!");
+        //attention.toast({msg:"Hello world", icon:"error"})
+        //attention.success({title:"Hello world", icon:"success"});
+        //attention.error({title:"Hello world", icon:"error"});
+
+        let html = `
+          <form id="check-availability-form" acton="#" method="get" novalidate class="row g-3 needs-validation">
+            <div class="form-row" id="reservation-dates-modal">
+              <div class="col-md-6">
+                <input disabled required type="text" class="form-control" id="start" name="start" aria-describedby="startHelp" placeholder="Arrival">
+              </div>
+              <div class="col-md-6">
+                <input disabled required type="text" class="form-control" id="end" name="end" aria-describedby="endHelp" placeholder="Departure">
+              </div>
+            </div>
+          </form>
+        `;
+
+        attention.custom({
+          msg: html,
+          title: "Choose your dates",
+        });
+      });
+
+      (() => {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+          form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+            }
+
+            form.classList.add('was-validated')
+          }, false)
+        })
+      })()
+
+      function notify(msg, msgType) {
+        notie.alert({
+          type: msgType,
+          text: msg,
+        });
+      }
+
+      function notifyModal(title, htmlText, icon, confirmationButtonText) {
+        Swal.fire({
+          title: title,
+          html: htmlText,
+          icon: icon,
+          confirmButtonText: confirmationButtonText
+        });
+      }
+
+      function Prompt() {
+        let toast = function(c) {
+          console.log("Toast");
+
+          const {
+            msg= "",
+            icon = "success",
+            position = "top-end",
+          } = c;
+
+          const Toast = Swal.mixin({
+            toast: true,
+            title: msg,
+            position: position,
+            showConfirmButton: false,
+            timer: 3000,
+            icon: icon,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({});
+        }
+
+        let success = function(c) {
+          console.log("Alert");
+          const {
+            title = "",
+            htmlText = "",
+            icon = "",
+            footer = ""
+          } = c;
+
+          Swal.fire({
+            icon: icon,
+            title: title,
+            text: htmlText,
+            footer: footer
+          });
+
+        }
+
+        let error = function(c) {
+          console.log("error");
+          const {
+            title = "",
+            htmlText = "",
+            icon = "",
+            footer = ""
+          } = c;
+
+          Swal.fire({
+            icon: icon,
+            title: title,
+            text: htmlText,
+            footer: footer
+          });
+
+        }
+
+        async function custom(c) {
+          const {
+            msg = "",
+            title = "",
+          } = c;
+
+          const { value: formValues } = await Swal.fire({
+            title: title,
+            html: msg,
+            focusConfirm: false,
+            backdrop: false,
+            showCancelButton: true,
+            willOpen: () =>{
+              let dateRangeElem = document.getElementById("reservation-dates-modal");
+              const dateRangePicker = new DateRangePicker(dateRangeElem, {
+                autohide: true,
+                format: 'yyyy-mm-dd',
+                showOnFocus: true,
+                orientation: "top auto",
+                //minDate: new Date()
+              });
+            },
+            preConfirm: () => {
+              return [
+                document.getElementById("start").value,
+                document.getElementById("end").value
+              ];
+            },
+            didOpen: () => {
+              document.getElementById("start").removeAttribute("disabled");
+              document.getElementById("end").removeAttribute("disabled");
+            }
+          });
+          if (formValues) {
+            Swal.fire(JSON.stringify(formValues));
+          } 
+        }
+
+        return {
+          toast: toast,
+          success: success,
+          error: error,
+          custom: custom,
+        }
+      }
+    </script>
 </body>
 </html>
