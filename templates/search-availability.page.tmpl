@@ -7,16 +7,16 @@
         <div class="col">
             <h1 class="nt-5">Search For Availability</h1>
 
-            <form action="#" method="GET" class="row g-3 needs-validation" novalidate>
-
+            <form action="/search-availability" method="post" class="row g-3 needs-validation" novalidate>
+                <input type="hidden" name="csrf_token" value="{{.CSRFToken}}"/>
               <div class="form-row">
                 <div class="col">
                   <div class="form-row" id="date-range">
                     <div class="col">
-                      <input required type="text" class="form-control" id="start_date" name="start_date" aria-describedby="startDateHelp" placeholder="Arrival">
+                      <input required type="text" class="form-control" id="start" name="start" aria-describedby="startDateHelp" placeholder="Arrival">
                     </div>
                     <div class="col">
-                      <input required type="text" class="form-control" id="end_date" name="end_date" aria-describedby="endDateHelp" placeholder="Departure">
+                      <input required type="text" class="form-control" id="end" name="end" aria-describedby="endDateHelp" placeholder="Departure">
                     </div>
                   </div>
                 </div>

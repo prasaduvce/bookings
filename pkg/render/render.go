@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"path/filepath"
 
+	"github.com/justinas/nosurf"
 	"github.com/prasaduvce/bookings/pkg/config"
 	"github.com/prasaduvce/bookings/pkg/models"
 )
@@ -17,12 +18,13 @@ func SetAppConfig(a *config.AppConfig) {
 	appConfig = a
 }
 
-func AddDefaultData(td *models.TemplateData) *models.TemplateData {
+func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
+	td.CSRFToken = nosurf.Token(r)
 	return td
 }
 
 // RenderHtml is a function that renders HTML templates.
-func RenderHtml(w http.ResponseWriter, templatePath string, td *models.TemplateData) {
+func RenderHtml(w http.ResponseWriter, templatePath string, td *models.TemplateData, r *http.Request) {
 
 	//var tc config.AppConfig
 
@@ -50,7 +52,7 @@ func RenderHtml(w http.ResponseWriter, templatePath string, td *models.TemplateD
 	}
 	buf := new(bytes.Buffer)
 
-	td = AddDefaultData(td)
+	td = AddDefaultData(td, r)
 	err := t.Execute(buf, td)
 	if err != nil {
 		log.Println("Error executing template: ", err)
