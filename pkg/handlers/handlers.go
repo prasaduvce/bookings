@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/prasaduvce/bookings/pkg/config"
-	"github.com/prasaduvce/bookings/pkg/render"
 	"github.com/prasaduvce/bookings/pkg/models"
+	"github.com/prasaduvce/bookings/pkg/render"
 )
 
 type Repository struct {
@@ -50,5 +50,25 @@ func (Repo *Repository) AboutHtml(w http.ResponseWriter, t *http.Request) {
 	//log.Println("remoteIP inside about ", remoteIP)
 	render.RenderHtml(w, "about.page.tmpl", &models.TemplateData{
 		StringMap: stringMap,
-	} )
+	})
+}
+
+func (Repo *Repository) Generals(w http.ResponseWriter, t *http.Request) {
+	render.RenderHtml(w, "generals.page.tmpl", &models.TemplateData{})
+}
+
+func (Repo *Repository) Majors(w http.ResponseWriter, t *http.Request) {
+	render.RenderHtml(w, "majors.page.tmpl", &models.TemplateData{})
+}
+
+func (Repo *Repository) Reservation(w http.ResponseWriter, t *http.Request) {
+	render.RenderHtml(w, "make-reservation.page.tmpl", &models.TemplateData{})
+}
+
+func (Repo *Repository) Search(w http.ResponseWriter, t *http.Request) {
+	render.RenderHtml(w, "search-availability.page.tmpl", &models.TemplateData{})
+}
+
+func (Repo *Repository) Contact(w http.ResponseWriter, t *http.Request) {
+	render.RenderHtml(w, "contact.page.tmpl", &models.TemplateData{})
 }

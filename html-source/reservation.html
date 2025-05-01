@@ -70,37 +70,28 @@
             </div>
         </div>
 
-        <div class="row">
-          <div class="col">
-              <p id="myParagraph">This is some text.</p>
-              <p>
-                <button id="colorButton" class="btn btn-outline-secondary">Click Me</button>
-              </p>
-          </div>
-        </div>
     
-      </div>
+    </div>
+    
     <div class="row">
         <div class="row my-footer" >
-            <div class="col">
-                Left
-            </div>
-            <div class="col">
-                Middle
-            </div>
-            <div class="col">
+              <div class="col">
+                  Left
+              </div>
+              <div class="col">
+                  Middle
+              </div>
+              <div class="col">
                 Right
-            </div>
+              </div>
+          </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/datepicker-full.min.js"></script>
     <script src="https://unpkg.com/notie"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
     <script>
-
       var attention = Prompt();
 
       const elem = document.getElementById('date-range');
@@ -109,22 +100,12 @@
         format: 'yyyy-mm-dd',
         //minDate: new Date()
       });
-    
-
       console.log("I am printing from the javascript");
       //let myEl = document.getElementById("myParagraph");
       //alert("Hello");
       //myEl.classList.add("redText");
       document.getElementById("colorButton").addEventListener("click", function() {
-
-        //notify("Hello, this is a notification!", "warning");
-        //myEl.classList.toggle("redText");
-        //notifyModal("Title", "<em>All Success</em>", "success", "Great!");
-        //attention.toast({msg:"Hello world", icon:"error"})
-        //attention.success({title:"Hello world", icon:"success"});
-        //attention.error({title:"Hello world", icon:"error"});
-
-        let html = `
+          let html = `
           <form id="check-availability-form" acton="#" method="get" novalidate class="row g-3 needs-validation">
             <div class="form-row" id="reservation-dates-modal">
               <div class="col-md-6">
@@ -136,13 +117,11 @@
             </div>
           </form>
         `;
-
         attention.custom({
           msg: html,
           title: "Choose your dates",
         });
       });
-
       (() => {
   'use strict'
 

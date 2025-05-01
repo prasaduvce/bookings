@@ -1,0 +1,47 @@
+{{template "base" .}}
+
+{{define "content"}}
+<div class="container">
+        
+    <div class="row">
+        <div class="col">
+            <h1 class="nt-5">Search For Availability</h1>
+
+            <form action="#" method="GET" class="row g-3 needs-validation" novalidate>
+
+              <div class="form-row">
+                <div class="col">
+                  <div class="form-row" id="date-range">
+                    <div class="col">
+                      <input required type="text" class="form-control" id="start_date" name="start_date" aria-describedby="startDateHelp" placeholder="Arrival">
+                    </div>
+                    <div class="col">
+                      <input required type="text" class="form-control" id="end_date" name="end_date" aria-describedby="endDateHelp" placeholder="Departure">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary">Search Availability</button>
+          </div>
+
+            </form>
+        </div>
+    </div>
+
+
+</div>
+{{end}}
+
+{{define "js"}}
+<script>
+
+const elem = document.getElementById('date-range');
+  const dateRangepicker = new DateRangePicker(elem, {
+    autohide: true,
+    format: 'yyyy-mm-dd',
+    //minDate: new Date()
+  });
+
+</script>
+{{end}}
