@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/prasaduvce/bookings/internal/config"
+	"github.com/prasaduvce/bookings/internal/forms"
 	"github.com/prasaduvce/bookings/internal/models"
 	"github.com/prasaduvce/bookings/internal/render"
 )
@@ -64,7 +65,50 @@ func (Repo *Repository) Majors(w http.ResponseWriter, r *http.Request) {
 }
 
 func (Repo *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
-	render.RenderHtml(w, "make-reservation.page.tmpl", &models.TemplateData{}, r)
+	var emptyReservation models.Reservation
+	data := make(map[string]interface{})
+	data["reservation"] = emptyReservation
+	render.RenderHtml(w, "make-reservation.page.tmpl", &models.TemplateData{
+		Form: forms.New(nil),
+		Data: data,
+	}, r)
+}
+
+// PostReservation handles the post request for reservation form
+func (Repo *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		log.Println("Error parsing form: ", err)
+		return
+	}
+
+	reservation := models.Reservation{
+		FirstName: r.Form.Get("first_name"),
+		LastName:  r.Form.Get("last_name"),
+		Email:     r.Form.Get("email"),
+		Phone:     r.Form.Get("phone"),
+	}
+
+	form := forms.New(r.PostForm)
+
+	form.Required("first_name", "last_name", "email")
+	form.MinLength("first_name", 3, r)
+	form.MinLength("last_name", 3, r)
+	form.IsEmail("email")
+
+	if !form.Valid() {
+		data := make(map[string]interface{})
+		data["reservation"] = reservation
+
+		render.RenderHtml(w, "make-reservation.page.tmpl", &models.TemplateData{
+			Form: form,
+			Data: data,
+		}, r)
+		return
+	}
+	Repo.App.Session.Put(r.Context(), "reservation", reservation)
+
+	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)
 }
 
 func (Repo *Repository) Search(w http.ResponseWriter, r *http.Request) {
@@ -99,4 +143,24 @@ func (Repo *Repository) AvilabilityJson(w http.ResponseWriter, r *http.Request) 
 
 func (Repo *Repository) Contact(w http.ResponseWriter, r *http.Request) {
 	render.RenderHtml(w, "contact.page.tmpl", &models.TemplateData{}, r)
+}
+
+func (Repo *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) {
+
+	// Get the reservation from the session
+	reservation, ok := Repo.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+	if !ok {
+		log.Println("Cannot get reservation from session")
+		Repo.App.Session.Put(r.Context(), "error", "Cannot get reservation from session")
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		return
+	}
+
+	// Clear the reservation from the session
+	Repo.App.Session.Remove(r.Context(), "reservation")
+	render.RenderHtml(w, "reservation-summary.page.tmpl", &models.TemplateData{
+		Data: map[string]interface{}{
+			"reservation": reservation,
+		},
+	}, r)
 }
