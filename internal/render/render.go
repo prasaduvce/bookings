@@ -2,6 +2,7 @@ package render
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -13,6 +14,7 @@ import (
 )
 
 var appConfig *config.AppConfig
+var pathToTemplates = "./templates"
 
 func SetAppConfig(a *config.AppConfig) {
 	appConfig = a
@@ -92,7 +94,7 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 	myCache := map[string]*template.Template{}
 
 	//get all the files names *.page.tmpl from templates folder
-	pages, err := filepath.Glob("./templates/*.page.tmpl")
+	pages, err := filepath.Glob(fmt.Sprintf("%s/*.page.tmpl", pathToTemplates))
 
 	if err != nil {
 		return myCache, err
@@ -109,14 +111,14 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 		}
 
 		//parse the base layout
-		matches, err := filepath.Glob("./templates/*.layout.tmpl")
+		matches, err := filepath.Glob(fmt.Sprintf("%s/*.layout.tmpl", pathToTemplates))
 		if err != nil {
 			log.Println("Error parsing base layout: ", err)
 			return myCache, err
 		}
 		//parse the partials
 		if len(matches) > 0 {
-			ts, err = ts.ParseGlob("./templates/*.layout.tmpl")
+			ts, err = ts.ParseGlob(fmt.Sprintf("%s/*.layout.tmpl", pathToTemplates))
 			if err != nil {
 				log.Println("Error parsing base layout: ", err)
 				return myCache, err
