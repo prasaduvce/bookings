@@ -37,3 +37,31 @@ func getSession() (*http.Request, error) {
 	session.Put(r.Context(), "flash", "123")
 	return r, nil
 }
+
+func TestRenderHtml(t *testing.T) {
+	pathToTemplates = "./../../templates"
+
+	tc, err := CreateTemplateCache()
+	if err != nil {
+		t.Fatalf("Failed to create template cache: %v", err)
+	}
+	appConfig.Templates = tc
+
+	r, err := getSession()
+	if err != nil {
+		t.Fatalf("Failed to get session: %v", err)
+	}
+
+	var ww myWriter
+
+	err = RenderHtml(&ww, "home.page.tmpl", &models.TemplateData{}, r)
+
+	if err != nil {
+		t.Fatalf("Failed to render HTML: %v", err)
+	}
+
+	err = RenderHtml(&ww, "non-existing.page.tmpl", &models.TemplateData{}, r)
+	if err == nil {
+		t.Fatalf("Expected error for non-existing template, got nil")
+	}
+}

@@ -2,6 +2,7 @@ package render
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"html/template"
 	"log"
@@ -29,7 +30,7 @@ func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateDa
 }
 
 // RenderHtml is a function that renders HTML templates.
-func RenderHtml(w http.ResponseWriter, templatePath string, td *models.TemplateData, r *http.Request) {
+func RenderHtml(w http.ResponseWriter, templatePath string, td *models.TemplateData, r *http.Request) error {
 
 	//var tc config.AppConfig
 
@@ -39,7 +40,6 @@ func RenderHtml(w http.ResponseWriter, templatePath string, td *models.TemplateD
 	//create a template cache
 	//tc, err := a.CreateTemplateCache()
 
-	
 	var tc map[string]*template.Template
 	if appConfig.UseCache {
 		tc = appConfig.Templates
@@ -52,8 +52,7 @@ func RenderHtml(w http.ResponseWriter, templatePath string, td *models.TemplateD
 	t, ok := tc[templatePath]
 	if !ok {
 		log.Println("Could not get template from cache")
-		http.Error(w, "Could not get template from cache", http.StatusInternalServerError)
-		return
+		return errors.New("could not get template from cache")
 	}
 	buf := new(bytes.Buffer)
 
@@ -62,14 +61,14 @@ func RenderHtml(w http.ResponseWriter, templatePath string, td *models.TemplateD
 	if err != nil {
 		log.Println("Error executing template: ", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+		return err
 	}
 
 	_, err = buf.WriteTo(w)
 	if err != nil {
 		log.Println("Error writing template to response: ", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+		return err
 	}
 	//get requested template from cache
 
@@ -86,11 +85,11 @@ func RenderHtml(w http.ResponseWriter, templatePath string, td *models.TemplateD
 		fmt.Println("Error executing template: ", errTemplate)
 		return
 	}*/
+	return nil
 }
 
 func CreateTemplateCache() (map[string]*template.Template, error) {
-	//myCache := make(map[string]*template.Template)
-
+	//myCache := make(map[string]*template.Templat
 	myCache := map[string]*template.Template{}
 
 	//get all the files names *.page.tmpl from templates folder
