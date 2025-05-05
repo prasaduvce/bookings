@@ -47,7 +47,7 @@ func getRoutes() http.Handler {
 
 	app.Templates = tc
 	app.UseCache = true
-	render.SetAppConfig(&app)
+	render.NewTemplates(&app)
 	// Avoid using handlers directly to prevent cyclic dependency
 	repo := NewRepo(&app)
 	NewHandlers(repo)

@@ -65,3 +65,15 @@ func TestRenderHtml(t *testing.T) {
 		t.Fatalf("Expected error for non-existing template, got nil")
 	}
 }
+
+func TestNewTemplates(t *testing.T) {
+	NewTemplates(appConfig)
+}
+
+func TestCreateTemplateCache(t *testing.T) {
+	pathToTemplates = "./../../templates"
+	_, err := CreateTemplateCache()
+	if err != nil {
+		t.Error(err)
+	}
+}
