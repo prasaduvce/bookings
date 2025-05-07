@@ -8,6 +8,7 @@ import (
 
 	"github.com/prasaduvce/bookings/internal/config"
 	"github.com/prasaduvce/bookings/internal/forms"
+	"github.com/prasaduvce/bookings/internal/helpers"
 	"github.com/prasaduvce/bookings/internal/models"
 	"github.com/prasaduvce/bookings/internal/render"
 )
@@ -34,26 +35,11 @@ func (Repo *Repository) Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (Repo *Repository) HomeHtml(w http.ResponseWriter, r *http.Request) {
-	//log.Println("Inside HomeHtml")
-	remoteIP := r.RemoteAddr
-	//log.Println("remoteIP inside Home ", remoteIP)
-	Repo.App.Session.Put(r.Context(), "remote_ip", remoteIP)
 	render.RenderHtml(w, "home.page.tmpl", &models.TemplateData{}, r)
 }
 
 func (Repo *Repository) AboutHtml(w http.ResponseWriter, r *http.Request) {
-	//log.Println("Inside AboutHtml")
-	stringMap := make(map[string]string)
-	stringMap["test"] = "Hello, World!"
-
-	// Get the remote IP address from the session
-	remoteIP := Repo.App.Session.GetString(r.Context(), "remote_ip")
-	stringMap["remote_ip"] = remoteIP
-
-	//log.Println("remoteIP inside about ", remoteIP)
-	render.RenderHtml(w, "about.page.tmpl", &models.TemplateData{
-		StringMap: stringMap,
-	}, r)
+	render.RenderHtml(w, "about.page.tmpl", &models.TemplateData{}, r)
 }
 
 func (Repo *Repository) Generals(w http.ResponseWriter, r *http.Request) {
@@ -78,7 +64,8 @@ func (Repo *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 func (Repo *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
-		log.Println("Error parsing form: ", err)
+		//log.Println("Error parsing form: ", err)
+		helpers.ServerError(w, err)
 		return
 	}
 
@@ -134,7 +121,9 @@ func (Repo *Repository) AvilabilityJson(w http.ResponseWriter, r *http.Request) 
 	}
 	out, err := json.MarshalIndent(resp, "", "    ")
 	if err != nil {
-		log.Println("Error marshalling JSON: ", err)
+		helpers.ServerError(w, err)
+		return
+		//log.Println("Error marshalling JSON: ", err)
 	}
 	log.Println(string(out))
 	w.Header().Set("Content-Type", "application/json")
@@ -150,7 +139,8 @@ func (Repo *Repository) ReservationSummary(w http.ResponseWriter, r *http.Reques
 	// Get the reservation from the session
 	reservation, ok := Repo.App.Session.Get(r.Context(), "reservation").(models.Reservation)
 	if !ok {
-		log.Println("Cannot get reservation from session")
+		Repo.App.ErrorLog.Println("Cannot get reservation from session")
+		//log.Println("Cannot get reservation from session")
 		Repo.App.Session.Put(r.Context(), "error", "Cannot get reservation from session")
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
