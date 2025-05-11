@@ -7,21 +7,26 @@ import (
 	"net/http"
 
 	"github.com/prasaduvce/bookings/internal/config"
+	driver "github.com/prasaduvce/bookings/internal/drivers"
 	"github.com/prasaduvce/bookings/internal/forms"
 	"github.com/prasaduvce/bookings/internal/helpers"
 	"github.com/prasaduvce/bookings/internal/models"
 	"github.com/prasaduvce/bookings/internal/render"
+	"github.com/prasaduvce/bookings/internal/repository"
+	"github.com/prasaduvce/bookings/internal/repository/dbrepo"
 )
 
 type Repository struct {
 	App *config.AppConfig
+	DB repository.DataBaseRepo
 }
 
 var Repo *Repository
 
-func NewRepo(a *config.AppConfig) *Repository {
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB: dbrepo.NewPostGresRepo(db.SQL, a),
 	}
 }
 

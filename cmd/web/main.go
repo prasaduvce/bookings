@@ -10,6 +10,7 @@ import (
 
 	"github.com/alexedwards/scs/v2"
 	"github.com/prasaduvce/bookings/internal/config"
+	driver "github.com/prasaduvce/bookings/internal/drivers"
 	"github.com/prasaduvce/bookings/internal/handlers"
 	"github.com/prasaduvce/bookings/internal/helpers"
 	"github.com/prasaduvce/bookings/internal/models"
@@ -25,11 +26,12 @@ var errorLog *log.Logger
 
 func main() {
 
-	err := run()
+	db, err := run()
 	if err != nil {
 		fmt.Println("Error starting application: ", err)
 		return
 	}
+	defer db.SQL.Close()
 
 	fmt.Printf("Starting server on port %s", portNumber)
 	
@@ -44,7 +46,7 @@ func main() {
 	}
 }
 
-func run() error {
+func run() (*driver.DB,  error) {
 
 	//what to store in session
 	gob.Register(models.Reservation{})
@@ -67,19 +69,28 @@ func run() error {
 
 	app.Session = session
 
+	//connect to Database
+	log.Println("Connecting to Database")
+	db, err := driver.ConnectSQL("host=localhost port=5432 dbname=bookings user=renuka.bm password=")
+	if err != nil {
+		log.Fatal("Cannot connect to Database !!!", err)
+	}
+	log.Println("connected to Database")
+
 	tc, err := render.CreateTemplateCache()
 
 	if err != nil {
 		fmt.Println("Error creating template cache: ", err)
-		return err
+		return nil, err
 	}
+
 
 	app.Templates = tc
 	app.UseCache = true
 	render.NewTemplates(&app)
-	repo := handlers.NewRepo(&app)
+	repo := handlers.NewRepo(&app, db)
 	handlers.NewHandlers(repo)
 	helpers.NewHelpers(&app)
 
-	return nil;
+	return db, nil;
 }
