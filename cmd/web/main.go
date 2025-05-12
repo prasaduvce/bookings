@@ -50,6 +50,9 @@ func run() (*driver.DB,  error) {
 
 	//what to store in session
 	gob.Register(models.Reservation{})
+	gob.Register(models.Room{})
+	gob.Register(models.User{})
+	gob.Register(models.Restriction{})
 
 	//change this to true when in production
 	app.InProduction = false
@@ -87,7 +90,7 @@ func run() (*driver.DB,  error) {
 
 	app.Templates = tc
 	app.UseCache = true
-	render.NewTemplates(&app)
+	render.NewRenderer(&app)
 	repo := handlers.NewRepo(&app, db)
 	handlers.NewHandlers(repo)
 	helpers.NewHelpers(&app)

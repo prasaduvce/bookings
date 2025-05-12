@@ -98,3 +98,11 @@ add constraint
 fk_room_restrictions_reservations
 FOREIGN key (reservation_id) references reservations(id) 
 on delete cascade on update cascade;
+
+ALTER TABLE room_restrictions ALTER COLUMN restriction_id SET NOT NULL;
+ALTER TABLE room_restrictions ALTER COLUMN created_at SET NOT NULL;
+ALTER TABLE room_restrictions ALTER COLUMN end_date SET NOT NULL;
+ALTER TABLE room_restrictions ALTER COLUMN room_id SET NOT NULL;
+ALTER TABLE room_restrictions ALTER COLUMN start_date SET NOT NULL;
+ALTER TABLE room_restrictions ALTER COLUMN updated_at SET NOT NULL;
+

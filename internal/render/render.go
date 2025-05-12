@@ -17,7 +17,7 @@ import (
 var appConfig *config.AppConfig
 var pathToTemplates = "./templates"
 
-func NewTemplates(a *config.AppConfig) {
+func NewRenderer(a *config.AppConfig) {
 	appConfig = a
 }
 
@@ -30,7 +30,7 @@ func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateDa
 }
 
 // RenderHtml is a function that renders HTML templates.
-func RenderHtml(w http.ResponseWriter, templatePath string, td *models.TemplateData, r *http.Request) error {
+func Template(w http.ResponseWriter, templatePath string, td *models.TemplateData, r *http.Request) error {
 
 	//var tc config.AppConfig
 
